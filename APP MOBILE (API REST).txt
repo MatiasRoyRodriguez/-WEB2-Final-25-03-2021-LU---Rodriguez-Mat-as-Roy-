@@ -1,0 +1,44 @@
+4. APP MOBILE (API REST)
+El banco está pensando en realizar una pequeña aplicación para celulares.
+Para esto, el departamento de banca digital nos envía los siguientes 
+casos de uso:
+
+
+Como cliente quiero poder ver mis datos personales
+Como cliente quiero poder modificar mis datos personales
+Como cliente quiero poder ver un listado de mis cuentas
+Como cliente quiero poder el saldo actual de una cuenta determinada
+Como cliente quiero poder ver mi historial de operaciones dado
+un intervalo de dos fechas
+Como cliente quiero poder dar de baja una cuenta
+Como cliente quiero poder realizar una transferencia rápida a otro cliente
+ 
+¿Qué cambios se deben realizar en el sistema para integrar 
+estos requerimientos a través de una API REST? 
+
+Rta: Como primer paso se debería implementar un API controller, también definir
+-un router especifico para generar los nuevos ENDPOINT a los que va a "pegarle"
+-la app y en este mismo aplicar la tabla de ruteo que se aclara en el siguiente punto. 
+También se debe modificar la tabla de clientes, poniendo una nueva fila la cual debería
+- ser un booleano llamado "activo" con el cual un cliente pueda dar de baja su cuenta. 
+Cabe aclarar que seria mas eficiente poder tener el saldo de un usuario en cada cuenta
+- y no tener que calcularlo a base de sus movimientos esto también seria una nueva fila 
+- llamada "saldo_cuenta" de tipo double.
+
+
+Defina la tabla de ruteo para cada requerimiento.
+(ENDPOINT + METODO HTTP + CONTROLADOR+MÉTODO). No es necesario implementar.
+
+( Fueron definidos en el mismo orden en que lo decía la consigna)
+
+    ENDPOINT                    | METODO | CONTROLADOR 
+
+    /cliente/:ID                | GET    | clienteController + getClienteByID( $id )
+    /cliente/:ID                | PUT    | clienteController + updateClienteByID( $id )
+    /cliente/cuentas            | GET    | clienteController + getCuentasClienteByID( $id )
+    /cliente/cuentas/:ID        | GET    | clienteController + getCuentasClienteByID( $id )
+    /cliente/operaciones        | GET    | clienteController + getOperaciones($date1, $date2)
+    /cliente/:ID                | DELETE | clienteController + deleteClientByID ( $id )
+    *Aclaración con respecto a la ruta anterior, lo ideal seria poder cambiar el estado de la 
+    -cuenta a inactivo mediante un POST, pero ya que se pide borrarla definitivamente si es un DELETE.
+    /cliente/cuenta/:ID         | POST   | clienteController + transferir($idDestinatario, $monto)
